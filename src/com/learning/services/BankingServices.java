@@ -1,0 +1,53 @@
+package com.learning.services;
+
+import java.util.Scanner;
+
+import com.learning.module.Customer;
+
+public class BankingServices {
+	 Scanner sc = new Scanner(System.in);
+	    int bankBalance = 1000;
+
+	    public void logout() {
+	        System.out.println("You are logged out now");
+	    }
+
+	    public void deposit(Customer customer) {
+	        int amount;
+	        System.out.println("Enter the deposit amount");
+	        amount = sc.nextInt();
+	        if (amount > 0) {
+	            System.out.println("Amount deposited successfully");
+	            customer.setBalance(customer.getBalance() + amount);
+	            System.out.println("Total Balance is : " + customer.getBalance());
+	        } else System.out.println("Please provide valid Input");
+	    }
+
+	    public void withdrawl(Customer customer1, String type) {
+	        int amount;
+	        System.out.println("Enter " + type + " amount");
+	        amount = sc.nextInt();
+	        if (customer1.getBalance() >= amount) {
+	            System.out.println(type + " is successful \n");
+	            customer1.setBalance(customer1.getBalance() - amount);
+	            System.out.println("Total Balance is : " + customer1.getBalance());
+	        } else System.out.println("Insufficient funds");
+	    }
+
+	    public void transfer(Customer customer1, String type) {
+	        int otp, otpGenerated, toAccountNumber;
+	        OTPService otpService = new OTPService();
+	        otpGenerated = otpService.generateOtp();
+	        System.out.println("Enter Account number to be Transferred");
+	        toAccountNumber = sc.nextInt();
+	        System.out.println("------Generated OTP is -----");
+	        System.out.println(otpGenerated);
+	        System.out.println("Enter the  OTP");
+	        otp = sc.nextInt();
+
+	        if (otp == otpGenerated) {
+	            System.out.println("OTP successful");
+	            withdrawl(customer1, type);
+	        } else System.out.println("Invalid OTP");
+	    }
+}
